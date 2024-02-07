@@ -2,6 +2,7 @@ package main
 
 // curl localhost:8080/movies --include --header "Content-Type: application/json" --request "POST" --data '{"id": 4, "title": "Police Academy", "year": "1984", "director": "Hugh Wilson"}'
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -23,14 +24,16 @@ var collection = []movie{
 
 func main() {
 	router := gin.Default()
+
 	router.GET("/movies", getMovies)
 	router.GET("/movies/:id", getMovieByID)
 	router.POST("/movies", addMovie)
 
-	router.Run("localhost:8080")
+	router.Run("10.140.239.254:8080")
 }
 
 func getMovies(c *gin.Context) {
+	fmt.Println("Client IP:", c.ClientIP())
 	c.IndentedJSON(http.StatusOK, collection)
 }
 
