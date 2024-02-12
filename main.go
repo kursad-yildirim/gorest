@@ -3,8 +3,11 @@ package main
 // curl localhost:8080/movies --include --header "Content-Type: application/json" --request "POST" --data '{"id": 4, "title": "Police Academy", "year": "1984", "director": "Hugh Wilson"}'
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,14 +25,26 @@ var collection = []movie{
 	{ID: 3, Title: "Airplane!", Aired: "1980", Madeby: "Jim Abrahams & David Zucker & Jerry Zucker"},
 }
 
+var serverName string = ":" + os.Getenv("APP_PORT")
+
 func main() {
-	router := gin.Default()
+	gin.SetMode(gin.ReleaseMode)
+	router := gin.New()
+	router.Use(gin.Logger())
 
 	router.GET("/movies", getMovies)
 	router.GET("/movies/:id", getMovieByID)
 	router.POST("/movies", addMovie)
-
-	router.Run("10.140.239.254:8080")
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		if err := router.Run(serverName); err != nil {
+			log.Fatal("Server failed")
+		}
+		wg.Done()
+	}()
+	fmt.Printf("Server started with address: %v\n", serverName)
+	wg.Wait()
 }
 
 func getMovies(c *gin.Context) {

@@ -1,0 +1,35 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: moviecollection
+  namespace: trip
+  labels:
+    app: moviecollection
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moviecollection
+  template:
+    metadata:
+       labels:
+         app: moviecollection
+    spec:
+      containers:
+        - name: moviecollection
+          image: moria.middle.earth:443/trip/moviecollection:0.1
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+               - ALL
+          env:
+            - name: APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: moviecollection
+                  key: APP_PORT

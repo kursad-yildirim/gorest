@@ -1,0 +1,3 @@
+configmap/moviecollection created
+deployment.apps/moviecollection created
+service/moviecollection created

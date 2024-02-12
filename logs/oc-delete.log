@@ -1,0 +1,3 @@
+Error from server (NotFound): error when deleting "manifests/configmap.yaml": configmaps "moviecollection" not found
+Error from server (NotFound): error when deleting "manifests/deployment.yaml": deployments.apps "moviecollection" not found
+Error from server (NotFound): error when deleting "manifests/service.yaml": services "moviecollection" not found

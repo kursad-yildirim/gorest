@@ -1,0 +1,27 @@
+[1/2] STEP 1/6: FROM docker.io/golang:1.20-alpine AS build
+[1/2] STEP 2/6: WORKDIR /app
+--> 6dad02094292
+[1/2] STEP 3/6: COPY go.mod go.sum ./
+--> 3d21d8ad8690
+[1/2] STEP 4/6: RUN go mod download
+--> bdf8686094a0
+[1/2] STEP 5/6: COPY *.go ./
+--> 7ffe4aeef7d0
+[1/2] STEP 6/6: RUN go build -o moviecollection
+--> c450021b6d5a
+[2/2] STEP 1/5: FROM docker.io/alpine:latest
+[2/2] STEP 2/5: COPY --from=build /app/moviecollection /app/moviecollection
+--> Using cache 33b87f2704e5db93941009e57f138cddf6f1cf2a76c3174b2dea4086c070854b
+--> 33b87f2704e5
+[2/2] STEP 3/5: WORKDIR /app
+--> Using cache 66867c7d650365deb0ff4d3f8cd5f9e4654435c1979dc4ad095a9fd701c2787c
+--> 66867c7d6503
+[2/2] STEP 4/5: EXPOSE 8080
+--> Using cache 1b9c0bc9f91314d2387d693c75c97819b3f4611067e205a2349535fd43821528
+--> 1b9c0bc9f913
+[2/2] STEP 5/5: CMD ["./moviecollection"]
+--> Using cache b01dc244072c8b538e99464738a814fa2b340423485a3fd64601d691b2f7a61b
+[2/2] COMMIT moria.middle.earth:443/trip/moviecollection:0.1
+--> b01dc244072c
+Successfully tagged moria.middle.earth:443/trip/moviecollection:0.1
+b01dc244072c8b538e99464738a814fa2b340423485a3fd64601d691b2f7a61b
